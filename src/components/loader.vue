@@ -1,0 +1,44 @@
+<template>
+  <div :style="style" ref="lavContainer" class="svg"></div>
+</template>
+
+<script>
+import lottie from "lottie-web";
+export default {
+  props: {
+    options: {
+      type: Object,
+      required: true
+    },
+    height: Number,
+    width: Number,
+    speed: Number
+  },
+
+  data() {
+    return {
+      style: {
+        width: this.width ? `${this.width}px` : "100%",
+        height: this.height ? `${this.height}px` : "100%",
+        overflow: "hidden",
+        margin: "0 auto"
+      }
+    };
+  },
+  mounted() {
+    // console.log(this.options.animationData.default);
+    this.anim = lottie.loadAnimation({
+      container: this.$refs.lavContainer,
+      renderer: "svg",
+      loop: this.options.loop !== false,
+      autoplay: this.options.autoplay !== false,
+      animationData: this.options.animationData.default, // ここだけ変更何故かデフォルトを入れないと動かなかった… (要検証)
+      rendererSettings: this.options.rendererSettings
+    });
+    this.anim.setSpeed(this.speed);
+    this.$emit("animCreated", this.anim);
+  }
+};
+</script>
+
+<style lang="scss"></style>
